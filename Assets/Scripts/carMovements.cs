@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class carMovements : MonoBehaviour
+public class CarMovements : MonoBehaviour
 {
     // Settings
     [SerializeField] float MoveSpeed = 50;
@@ -14,7 +14,7 @@ public class carMovements : MonoBehaviour
     [SerializeField] Vector3 selfGravity;
 
 
-    [SerializeField] private bool isGrounded;
+    private bool isGrounded;
     private Rigidbody rb;
 
     private Vector3 MoveForce;
@@ -50,6 +50,10 @@ public class carMovements : MonoBehaviour
         Debug.DrawRay(transform.position, MoveForce.normalized * 3);
         Debug.DrawRay(transform.position, transform.forward * 3, Color.blue);
         MoveForce = Vector3.Lerp(MoveForce.normalized, transform.forward, Traction * Time.deltaTime) * MoveForce.magnitude;
+
+        float speed = rb.velocity.magnitude * 6;
+
+        // Debug.Log("Speed: " + speed.ToString("0"));
     }
 
     private void FixedUpdate()
@@ -62,7 +66,6 @@ public class carMovements : MonoBehaviour
         if (col.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
-            Debug.Log(isGrounded);
         }
     }
 
@@ -71,7 +74,6 @@ public class carMovements : MonoBehaviour
         if (col.gameObject.CompareTag("Ground"))
         {
             isGrounded = false;
-            Debug.Log(isGrounded);
         }
     }
 }
