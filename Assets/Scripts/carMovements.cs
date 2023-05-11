@@ -5,25 +5,42 @@ using UnityEngine;
 public class carMovements : MonoBehaviour
 {
     // Settings
-    public float MoveSpeed = 50;
-    public float MaxSpeed = 15;
-    public float Drag = 0.98f;
-    public float SteerAngle = 20;
-    public float Traction = 1;
+    [SerializeField] float MoveSpeed = 50;
+    [SerializeField] float MaxSpeed = 15;
+    [SerializeField] float Drag = 0.98f;
+    [SerializeField] float SteerAngle = 20;
+    [SerializeField] float Traction = 1;
+    [Space(10f)]
+    [SerializeField] Vector3 selfGravity;
 
-    // Variables
+
+    [SerializeField] private bool isGrounded;
+    private Rigidbody rb;
+
     private Vector3 MoveForce;
 
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
     // Update is called once per frame
     void Update()
     {
         // Moving
         MoveForce += transform.forward * MoveSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
-        transform.position += MoveForce * Time.deltaTime;
+        if(isGrounded)
+        {
+            rb.velocity = new Vector3(MoveForce.x, rb.velocity.y, MoveForce.z);
+        }
+
+        //transform.position += MoveForce * Time.deltaTime;
 
         // Steering
         float steerInput = Input.GetAxis("Horizontal");
-        transform.Rotate(Vector3.up * steerInput * MoveForce.magnitude * SteerAngle * Time.deltaTime);
+        if (isGrounded)
+        {
+            transform.Rotate(Vector3.up * steerInput * MoveForce.magnitude * SteerAngle * Time.deltaTime);
+        }
 
         // Drag and max speed limit
         MoveForce *= Drag;
@@ -33,5 +50,28 @@ public class carMovements : MonoBehaviour
         Debug.DrawRay(transform.position, MoveForce.normalized * 3);
         Debug.DrawRay(transform.position, transform.forward * 3, Color.blue);
         MoveForce = Vector3.Lerp(MoveForce.normalized, transform.forward, Traction * Time.deltaTime) * MoveForce.magnitude;
+    }
+
+    private void FixedUpdate()
+    {
+        rb.AddForce(selfGravity, ForceMode.Acceleration);
+    }
+
+    private void OnCollisionStay(Collision col)
+    {
+        if (col.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+            Debug.Log(isGrounded);
+        }
+    }
+
+    private void OnCollisionExit(Collision col)
+    {
+        if (col.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
+            Debug.Log(isGrounded);
+        }
     }
 }
