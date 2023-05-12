@@ -74,7 +74,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.5
+  m_Time: 0.8
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.2
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef3c180645489924db7e4c12c15c53fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 150
+  MoveSpeed: 200
   MaxSpeed: 15
   Drag: 0.98
   SteerAngle: 15
@@ -290,7 +290,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.5
+  m_Time: 0.8
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.2
